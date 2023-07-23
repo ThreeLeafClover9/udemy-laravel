@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,3 +38,7 @@ Route::get('/admin/posts/example', function () {
     $url = \route('admin.home');
     return "this url is {$url}";
 })->name('admin.home');
+
+Route::get('/post/{id}', [PostsController::class, 'index']);
+
+Route::resource('posts', PostsController::class);
