@@ -22,10 +22,6 @@ Route::get('/about', function () {
     return "Hi about page";
 });
 
-Route::get('/contact', function () {
-    return "hi I am contact";
-});
-
 Route::get('/post/{id}/{name}', function ($id, $name) {
     return "This is post number {$id} {$name}";
 });
@@ -39,6 +35,8 @@ Route::get('/admin/posts/example', function () {
     return "this url is {$url}";
 })->name('admin.home');
 
-Route::get('/post/{id}', [PostsController::class, 'index']);
-
 Route::resource('posts', PostsController::class);
+
+Route::get('/contact', [PostsController::class, 'contact']);
+
+Route::get('/post/{id}/{name}/{password}', [PostsController::class, 'showPost']);
