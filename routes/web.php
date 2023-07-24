@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostsController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,3 +41,22 @@ Route::resource('posts', PostsController::class);
 Route::get('/contact', [PostsController::class, 'contact']);
 
 Route::get('/post/{id}/{name}/{password}', [PostsController::class, 'showPost']);
+
+Route::get('/insert', function () {
+    DB::insert('insert into posts (title, content) values (?, ?)', ['PHP with Laravel', 'Laravel is the best thing that has happened to PHP']);
+});
+
+Route::get('/read', function () {
+    $posts = DB::select('select * from posts where id = ?', [1]);
+    return $posts;
+});
+
+Route::get('/update', function () {
+    $affected = DB::update('update posts set title = "Update title" where id = ?', [1]);
+    return $affected;
+});
+
+Route::get('/delete', function () {
+    $deleted = DB::delete('delete from posts where id = ?', [1]);
+    return $deleted;
+});
