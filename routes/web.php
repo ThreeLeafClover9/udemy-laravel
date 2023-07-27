@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\PostsController;
+use App\Models\Country;
+use App\Models\Photo;
 use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +41,7 @@ Route::get('/admin/posts/example', function () {
     return "this url is {$url}";
 })->name('admin.home');
 
-Route::resource('posts', PostsController::class);
+Route::resource('post', PostsController::class);
 
 Route::get('/contact', [PostsController::class, 'contact']);
 
@@ -137,4 +141,76 @@ Route::get('/restore', function () {
 
 Route::get('/force-delete', function () {
     Post::onlyTrashed()->where('is_admin', 0)->forceDelete();
+});
+
+Route::get('/users/{id}/post', function ($id) {
+    return User::find($id)->post;
+});
+
+Route::get('/posts/{id}/user', function ($id) {
+    return Post::find($id)->user;
+});
+
+Route::get('/posts/{id}', function ($id) {
+    $posts = User::find($id)->posts;
+    foreach ($posts as $post) {
+        echo "{$post}<br>";
+    }
+});
+
+Route::get('/users/{id}/role', function ($id) {
+//    $user = User::find($id);
+//    foreach ($user->roles as $role) {
+//        echo "{$role}<br>";
+//    }
+    return User::find($id)->roles()->orderByDesc('id')->get();
+});
+
+Route::get('/pivots/{id}', function ($id) {
+    $user = User::find($id);
+    foreach ($user->roles as $role) {
+        echo "{$role->pivot->created_at}<br>";
+    }
+});
+
+Route::get('/country/{id}/posts', function ($id) {
+    $country = Country::find($id);
+    foreach ($country->posts as $post) {
+        echo "{$post->title}<br>";
+    }
+});
+
+Route::get('/users/{id}/photos', function ($id) {
+    $user = User::find($id);
+    foreach ($user->photos as $photo) {
+        echo "{$photo->url}<br>";
+    }
+});
+
+Route::get('/posts/{id}/photos', function ($id) {
+    $post = Post::find($id);
+    foreach ($post->photos as $photo) {
+        echo "{$photo->url}<br>";
+    }
+});
+
+Route::get('/photos/{id}/imageable', function ($id) {
+    return Photo::find($id)->imageable;
+});
+
+Route::get('/posts/{id}/tags', function ($id) {
+    $post = Post::find($id);
+    foreach ($post->tags as $tag) {
+        echo "{$tag->name}<br>";
+    }
+});
+
+Route::get('/tags/{id}/taggable', function ($id) {
+    $tag = Tag::find($id);
+    foreach ($tag->posts as $post) {
+        echo "{$post->title}<br>";
+    }
+    foreach ($tag->videos as $video) {
+        echo "{$video->name}<br>";
+    }
 });
