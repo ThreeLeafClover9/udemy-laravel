@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ResourceController;
 use App\Models\Country;
 use App\Models\Photo;
 use App\Models\Post;
@@ -41,14 +41,14 @@ Route::get('/admin/posts/example', function () {
     return "this url is {$url}";
 })->name('admin.home');
 
-Route::resource('post', PostsController::class);
+Route::resource('resource', ResourceController::class);
 
-Route::get('/contact', [PostsController::class, 'contact']);
+Route::get('/contact', [ResourceController::class, 'contact']);
 
-Route::get('/post/{id}/{name}/{password}', [PostsController::class, 'showPost']);
+Route::get('/post/{id}/{name}/{password}', [ResourceController::class, 'showPost']);
 
 Route::get('/insert', function () {
-    DB::insert('insert into posts (title, content) values (?, ?)', ['PHP with Laravel', 'Laravel is the best thing that has happened to PHP']);
+    DB::insert('insert into posts (title, content, user_id) values (?, ?, ?)', ['PHP with Laravel', 'Laravel is the best thing that has happened to PHP', 1]);
 });
 
 Route::get('/select', function () {
@@ -89,6 +89,7 @@ Route::get('/first-or-fail', function () {
 //});
 Route::get('/create', function () {
     Post::create([
+        'user_id' => 1,
         'title' => 'the create method',
         'content' => 'WOW I\'m learning a lot with Edwin Diaz',
     ]);

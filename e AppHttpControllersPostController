@@ -1,0 +1,12 @@
+[33mb152b6f[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m tinker
+[33m43418a1[m eloquent relationships
+[33mf910e24[m eloquent ORM
+[33mf03621f[m raw SQL queries
+[33m6f74944[m Refactor compact to with
+[33m4f8d992[m laravel migrations
+[33m2974c3c[m laravel blade templating engine
+[33mf1ae2b0[m views
+[33m5f4276e[m controllers
+[33m60066d3[m Refactor routes
+[33mfc57539[m routes
+[33mdfc33b1[m local environment setup

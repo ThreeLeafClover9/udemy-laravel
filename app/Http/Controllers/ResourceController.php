@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PostsController extends Controller
+class ResourceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
+    public function index()
     {
-        return "its working the number {$id}";
+        return "its working";
     }
 
     /**
