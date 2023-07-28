@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ResourceController;
 use App\Models\Country;
 use App\Models\Photo;
@@ -41,7 +42,7 @@ Route::get('/admin/posts/example', function () {
     return "this url is {$url}";
 })->name('admin.home');
 
-Route::resource('resource', ResourceController::class);
+Route::resource('resource/test', ResourceController::class);
 
 Route::get('/contact', [ResourceController::class, 'contact']);
 
@@ -215,3 +216,5 @@ Route::get('/tags/{id}/taggable', function ($id) {
         echo "{$video->name}<br>";
     }
 });
+
+Route::resource('resource/posts', PostController::class);
