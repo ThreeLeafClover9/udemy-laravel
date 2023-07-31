@@ -13,7 +13,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+//        $posts = Post::all();
+        $posts = Post::admin()->orderBy('id')->get();
         return view('post.index')->with('posts', $posts);
     }
 

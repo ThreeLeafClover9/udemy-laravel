@@ -7,6 +7,7 @@ use App\Models\Photo;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -218,3 +219,21 @@ Route::get('/tags/{id}/taggable', function ($id) {
 });
 
 Route::resource('resource/posts', PostController::class);
+
+Route::get('/dates', function () {
+    $date = new DateTime('+1 week');
+    echo sprintf("%s<br>", $date->format('m-d-Y'));
+    echo sprintf("%s<br>", Carbon::now()->addDays(10)->diffForHumans());
+    echo sprintf("%s<br>", Carbon::now()->subMonths(5)->diffForHumans());
+    echo sprintf("%s<br>", Carbon::now()->yesterday()->diffForHumans());
+});
+
+Route::get('/accessors', function () {
+    return User::find(1)->name;
+});
+
+Route::get('/mutators', function () {
+    User::find(1)->update([
+        'name' => 'WILLIAM'
+    ]);
+});
