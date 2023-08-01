@@ -36,6 +36,12 @@ class PostController extends Controller
 //            'content' => 'required'
 //        ]);
         $validated = $request->validated();
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $name = $file->getClientOriginalName();
+            $path = $file->storeAs('images', $name);
+            $validated['path'] = $path;
+        }
         Post::create([
             ...$validated,
             'user_id' => 1

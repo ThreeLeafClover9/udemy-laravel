@@ -11,10 +11,19 @@
             </ul>
         </div>
     @endif
-    <form method="post" action="{{ route('posts.store') }}">
+    <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
         @csrf
-        <input type="text" name="title" placeholder="Enter title">
-        <input type="text" name="content" placeholder="Enter content">
-        <input type="submit" name="submit" value="submit">
+        <div>
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" placeholder="Enter title">
+        </div>
+        <div>
+            <label for="content">Content:</label>
+            <input type="text" name="content" id="content" placeholder="Enter content">
+        </div>
+        <div>
+            <input type="file" name="file" id="file">
+        </div>
+        <button type="submit">Submit</button>
     </form>
 @endsection
