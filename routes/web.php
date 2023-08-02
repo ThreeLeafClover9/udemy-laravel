@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceController;
 use App\Models\Country;
 use App\Models\Photo;
@@ -23,6 +24,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+//    if (Auth::check()) {
+//        return "the user is logged in";
+//    }
+//    $name = 'test';
+//    $password = '123456789';
+//    if (Auth::attempt(['name' => $name, 'password' => $password])) {
+//        return redirect()->intended('/dashboard');
+//    }
+//    Auth::logout();
     return view('welcome');
 });
 
@@ -233,7 +243,20 @@ Route::get('/accessors', function () {
 });
 
 Route::get('/mutators', function () {
-    User::find(1)->update([
-        'name' => 'WILLIAM'
+    Post::find(1)->update([
+        'title' => 'WILLIAM'
     ]);
 });
+
+Route::get('/dashboard', function () {
+    $user = Auth::user();
+    return view('dashboard')->with('user', $user);
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
