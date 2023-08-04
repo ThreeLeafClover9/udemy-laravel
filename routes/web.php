@@ -260,3 +260,15 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/roles', function () {
+    return "Middleware role";
+})->middleware('role', 'auth');
+
+Route::get('/admin', function () {
+//    $user = Auth::user();
+//    if ($user->isAdmin()) {
+//        return "this user is an administrator";
+//    }
+    return "you are an administrator because you are seeing this page";
+})->middleware('is.admin');
