@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceController;
@@ -248,10 +249,11 @@ Route::get('/mutators', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-    return view('dashboard')->with('user', $user);
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    $user = Auth::user();
+//    return view('dashboard')->with('user', $user);
+//})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
