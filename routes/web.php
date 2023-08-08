@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceController;
+use App\Http\Controllers\ShippedMail;
 use App\Models\Country;
 use App\Models\Photo;
 use App\Models\Post;
@@ -274,3 +275,14 @@ Route::get('/admin', function () {
 //    }
     return "you are an administrator because you are seeing this page";
 })->middleware('is.admin');
+
+Route::get('/email', function () {
+    $data = [
+        'title' => 'When are you coming back?',
+        'content' => 'I was in your neighborhood last time and I could not find my way back'
+    ];
+//    Mail::send('emails.mail', $data, function ($message) {
+//        $message->to('test@example.com', 'Test')->subject('Hi, what\'s up');
+//    });
+    Mail::to('test@example.com')->send(new ShippedMail($data));
+});
