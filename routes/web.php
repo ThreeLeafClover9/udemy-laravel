@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\ShippedMail;
 use App\Models\Country;
+use App\Models\Phone;
 use App\Models\Photo;
 use App\Models\Post;
 use App\Models\Tag;
@@ -158,12 +159,28 @@ Route::get('/force-delete', function () {
     Post::onlyTrashed()->where('is_admin', 0)->forceDelete();
 });
 
-Route::get('/users/{id}/post', function ($id) {
-    return User::find($id)->post;
-});
+//Route::get('/users/{id}/post', function ($id) {
+//    return User::find($id)->post;
+//});
+//
+//Route::get('/posts/{id}/user', function ($id) {
+//    return Post::find($id)->user;
+//});
+Route::get('/one-to-one', function () {
+    $phone = new Phone(['number' => '010-1111-1111']);
+    $user = User::find(1);
+    $user->phone()->save($phone);
 
-Route::get('/posts/{id}/user', function ($id) {
-    return Post::find($id)->user;
+//    $phone = Phone::whereUserId(1)->first();
+//    $phone->number = "010-2222-2222";
+//    $phone->save();
+    $user = User::find(1);
+    $user->phone->number = "010-2222-2222";
+    $user->push();
+
+    echo User::find(1)->phone->number;
+
+    User::find(1)->phone()->delete();
 });
 
 Route::get('/posts/{id}', function ($id) {
