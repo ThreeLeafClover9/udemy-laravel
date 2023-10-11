@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\ShippedMail;
+use App\Models\Comment;
 use App\Models\Country;
 use App\Models\Phone;
 use App\Models\Photo;
@@ -166,21 +167,51 @@ Route::get('/force-delete', function () {
 //Route::get('/posts/{id}/user', function ($id) {
 //    return Post::find($id)->user;
 //});
-Route::get('/one-to-one', function () {
-    $phone = new Phone(['number' => '010-1111-1111']);
-    $user = User::find(1);
-    $user->phone()->save($phone);
+Route::prefix('/one-to-one')->group(function () {
+    Route::get('/create', function () {
+        $user = User::findOrFail(1);
+        $phone = new Phone(['number' => '010-1111-1111']);
+        $user->phone()->save($phone);
+    });
+    Route::get('/update', function () {
+//        $phone = Phone::whereUserId(1)->first();
+//        $phone->number = "010-2222-2222";
+//        $phone->save();
+        $user = User::findOrFail(1);
+        $user->phone->number = "010-2222-2222";
+        $user->push();
+    });
+    Route::get('/read', function () {
+        $user = User::findOrFail(1);
+        echo $user->phone->number;
+    });
+    Route::get('/delete', function () {
+        $user = User::findOrFail(1);
+        $user->phone()->delete();
+    });
+});
 
-//    $phone = Phone::whereUserId(1)->first();
-//    $phone->number = "010-2222-2222";
-//    $phone->save();
-    $user = User::find(1);
-    $user->phone->number = "010-2222-2222";
-    $user->push();
-
-    echo User::find(1)->phone->number;
-
-    User::find(1)->phone()->delete();
+Route::prefix('/one-to-many')->group(function () {
+    Route::get('/create', function () {
+        $post = Post::findOrFail(1);
+        $comment1 = new Comment(['title' => 'My first comment1', 'body' => 'I love Laravel']);
+        $comment2 = new Comment(['title' => 'My first comment2', 'body' => 'I love Laravel']);
+        $post->comments()->saveMany([$comment1, $comment2]);
+    });
+    Route::get('/read', function () {
+        $post = Post::findOrFail(1);
+        foreach ($post->comments as $comment) {
+            echo "{$comment->title}<br>";
+        }
+    });
+    Route::get('/update', function () {
+        $post = Post::findOrFail(1);
+        $post->comments()->whereId(1)->update(['title' => 'I love Laravel', 'body' => 'This is awesome']);
+    });
+    Route::get('/delete', function () {
+        $post = Post::findOrFail(1);
+        $post->comments()->whereId(1)->delete();
+    });
 });
 
 Route::get('/posts/{id}', function ($id) {
